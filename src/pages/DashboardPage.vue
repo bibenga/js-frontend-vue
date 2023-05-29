@@ -13,18 +13,34 @@
           <q-card-section>
             <div class="text-h6">Times</div>
           </q-card-section>
-
           <q-card-section class="q-pt-none">
-            Card1
+            <q-scroll-area style="height: 200px;">
+              <q-markup-table separator="horizontal">
+                <thead>
+                  <tr>
+                    <th class="text-left">Profile</th>
+                    <th class="text-right">Some text</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template v-for="profile in profileStore.profiles" :key="profile.id">
+                    <tr v-if="selectedProfiles.includes(profile.id)">
+                      <td class="text-left">{{ profile.name }}</td>
+                      <td class="text-right">{{ profile.id }}</td>
+                    </tr>
+                  </template>
+                </tbody>
+              </q-markup-table>
+            </q-scroll-area>
           </q-card-section>
         </q-card>
       </div>
+
       <div class="col q-pa-sm">
         <q-card flat bordered style="height: 300px;">
           <q-card-section>
             <div class="text-h6">Applications</div>
           </q-card-section>
-
           <q-scroll-area style="height: 200px;">
             <q-markup-table>
               <thead>
@@ -73,18 +89,17 @@
           <q-card-section>
             <div class="text-h6">Messages</div>
           </q-card-section>
-
           <q-card-section class="q-pt-none">
             Messages
           </q-card-section>
         </q-card>
       </div>
+
       <div class="col q-pa-sm">
         <q-card flat bordered style="height: 300px;">
           <q-card-section>
             <div class="text-h6">Locations</div>
           </q-card-section>
-
           <q-card-section class="q-pt-none">
             <apexchart height="200" type="pie" :options="options" :series="series"></apexchart>
           </q-card-section>
@@ -146,7 +161,11 @@ const series = [
 ]
 
 const profilesAsOptions = computed(() => {
-  return profileStore.profiles.map(p => ({ value: p.id, label: p.name }))
+  return profileStore.profiles.map(p => ({
+    value: p.id,
+    label: p.name,
+    disable: selectedProfiles.value.length <= 1 && selectedProfiles.value.includes(p.id)
+  }))
 })
 const selectedProfiles = ref<number[]>([])
 profileStore.load().then(() => {
