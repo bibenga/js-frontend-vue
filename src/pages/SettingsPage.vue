@@ -49,11 +49,11 @@ onMounted(() => {
   console.log('[SettingsPage.onMounted]')
 })
 onBeforeRouteUpdate((to, from) => {
-  // когда меняем profileId
+  // occured when profileId changed
   console.log(`[SettingsPage.onBeforeRouteUpdate] ${from.fullPath} -> ${to.fullPath}`)
 })
 onBeforeRouteLeave((to, from) => {
-  // когда уходи со страницы
+  // occured when go to other page
   console.log(`[SettingsPage.onBeforeRouteLeave] ${from.fullPath} -> ${to.fullPath}`)
 })
 
