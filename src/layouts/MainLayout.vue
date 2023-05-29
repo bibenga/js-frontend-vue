@@ -170,8 +170,10 @@ import { ref, watch, provide } from 'vue';
 import { useQuasar } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
 import { useAuthStore } from 'stores/auth'
+import { useRouter } from 'vue-router'
 
 const $q = useQuasar()
+const router = useRouter()
 
 watch(() => $q.dark.isActive, val => {
   console.log(val ? 'On dark mode' : 'On light mode')
@@ -195,6 +197,7 @@ function logoutWithConfirm() {
   }).onOk(() => {
     console.log('>>>> OK')
     authStore.logout()
+    router.push({ path: '/login' })
   }).onCancel(() => {
     console.log('>>>> Cancel')
   })

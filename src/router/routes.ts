@@ -2,9 +2,14 @@ import { RouteRecordRaw } from 'vue-router';
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
+    path: '/demo',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [{ path: '', component: () => import('pages/DemoPage.vue') }],
+  },
+
+  {
+    path: '/',
+    redirect: '/dashboard'
   },
 
   {
