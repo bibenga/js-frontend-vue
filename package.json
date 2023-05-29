@@ -23,7 +23,7 @@
     "@quasar/extras": "^1.16.4",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
-    "vue-router": "^4.2.1",
+    "vue-router": "^4.2.2",
     "vue3-apexcharts": "^1.4.1"
   },
   "devDependencies": {
@@ -31,15 +31,15 @@
     "@quasar/app-vite": "^1.4.3",
     "@quasar/quasar-app-extension-testing": "^2.1.0",
     "@quasar/quasar-app-extension-testing-unit-vitest": "^0.3.0",
-    "@types/node": "^20.2.3",
-    "@typescript-eslint/eslint-plugin": "^5.59.6",
-    "@typescript-eslint/parser": "^5.59.6",
+    "@types/node": "^20.2.5",
+    "@typescript-eslint/eslint-plugin": "^5.59.7",
+    "@typescript-eslint/parser": "^5.59.7",
     "@vue/devtools": "^6.5.0",
     "@vue/test-utils": "^2.3.2",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-vue": "^9.14.0",
+    "eslint-plugin-vue": "^9.14.1",
     "prettier": "^2.8.8",
     "typescript": "^5.0.4",
     "vitest": "^0.31.1"
