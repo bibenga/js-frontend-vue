@@ -93,7 +93,7 @@ export default defineComponent({
     )
     // return store.dispatch('load')
 
-    // действительно блочится все отображение и ждёт когда "загрузиться"
+    // yes, an "await" worked and the router waits
     // var profileStore = useProfileStore()
     // await profileStore.load()
   },
@@ -150,31 +150,6 @@ export default defineComponent({
   },
 
   data() {
-    // var api = this.$api
-    // api.get('/profiles.json', {
-    //   params: {
-    //     q: 12345
-    //   }
-    // }).then(response => {
-    //   console.log('[axios] then', response)
-    // }).catch(error => {
-    //   console.log('[axios] catch', error.code, error.respose)
-    // }).finally(() => {
-    //   console.log('[axios] finally')
-    // })
-
-    // fetch('/data/profiles.json', {
-    //   headers: {
-    //     'Accept': 'application/json',
-    //   },
-    // }).then(response => {
-    //   console.log('[fetch] then', response)
-    // }).catch(error => {
-    //   console.log('[fetch] catch', error.code, error.respose)
-    // }).finally(() => {
-    //   console.log('[fetch] finally')
-    // })
-
     return {
       olala: 'Sí',
     }
@@ -207,9 +182,6 @@ export default defineComponent({
       }
     },
     onReset() {
-      // this.name.value = null
-      // this.age.value = null
-      // this.accept.value = false
       this.name = null
       this.age = null
       this.accept = false

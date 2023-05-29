@@ -82,7 +82,6 @@
     </q-footer>
 
     <q-drawer v-model="leftDrawerOpen" :class="$q.dark.isActive ? 'bg-grey-9' : 'bg-grey-3'">
-      <!-- <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px"> -->
       <q-img class="absolute-top bg-primary" style="height: 150px">
         <div class="absolute-bottom bg-transparent">
           <q-avatar size="56px" class="q-mb-sm">
@@ -150,7 +149,6 @@
             <q-tooltip class="bg-accent">Logout</q-tooltip>
             <q-item-section avatar>
               <q-avatar icon="logout" />
-              <!-- <q-icon name="logout" /> -->
             </q-item-section>
             <q-item-section>
               <q-item-label>Logout</q-item-label>
@@ -166,73 +164,6 @@
     </q-page-container>
   </q-layout>
 </template>
-
-<!-- <script lang="ts">
-import { defineComponent, ref, watch } from 'vue';
-import { useQuasar } from 'quasar'
-import { useProfileStore } from 'stores/profiles'
-import { useAuthStore } from 'stores/auth'
-
-export default defineComponent({
-  name: 'MainLayout',
-
-  components: {
-    // EssentialLink
-  },
-
-  setup() {
-    const $q = useQuasar()
-
-    watch(() => $q.dark.isActive, val => {
-      console.log(val ? 'On dark mode' : 'On light mode')
-    })
-
-    const leftDrawerOpen = ref(false)
-
-    const authStore = useAuthStore()
-    authStore.init()
-
-    const profileStore = useProfileStore()
-    profileStore.load()
-
-
-    function logoutWithConfirm() {
-      $q.dialog({
-        title: 'Confirm',
-        message: 'Would you like to logout?',
-        cancel: true,
-        persistent: true,
-        focus: 'cancel'
-      }).onOk(() => {
-        console.log('>>>> OK')
-      }).onCancel(() => {
-        console.log('>>>> Cancel')
-      })
-    }
-
-    return {
-      // essentialLinks: linksList,
-      leftDrawerOpen,
-      // loaded,
-      profileStore,
-      authStore,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      },
-      logoutWithConfirm,
-      dark: $q.dark,
-    }
-  },
-
-  provide() {
-    return {
-      layoutProp: 'olala'
-    }
-  }
-
-});
-</script> -->
-
 
 <script setup lang="ts">
 import { ref, watch, provide } from 'vue';

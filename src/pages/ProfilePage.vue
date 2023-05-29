@@ -98,7 +98,7 @@ export default defineComponent({
   name: 'ProfilePage',
 
   props: {
-    // Когда profileId приходи из router то тип строка, пока не знаю можно ли вообще сделать числом?!
+    // always string, why do we recive a string?
     profileId: { type: Number, required: true },
   },
 
@@ -124,10 +124,8 @@ export default defineComponent({
 
     // ------------------
     const store = useTextPairStore();
-    // const $q = useQuasar()
     return {
       store,
-      // notify: $q.notify
     }
   },
 
@@ -152,11 +150,6 @@ export default defineComponent({
 
   created() {
     console.log('[ProfilePage] created')
-    // this.$watch(
-    //   () => this.$route.params,
-    //   () => { this.fetchData() },
-    //   { immediate: true }
-    // )
     watch(
       () => this.$route.params,
       () => { this.fetchData() },
@@ -167,12 +160,6 @@ export default defineComponent({
   mounted() {
     console.log('[ProfilePage] mounted')
   },
-
-  // computed {
-  //   profileIdInt() {
-  //     return Number(this.profileId)
-  //   }
-  // }
 
   provide() {
     return {

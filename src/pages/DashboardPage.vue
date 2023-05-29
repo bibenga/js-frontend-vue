@@ -94,61 +94,6 @@
   </q-page>
 </template>
 
-<!-- <script lang="ts">
-import { defineComponent } from 'vue';
-import { useQuasar, getCssVar } from 'quasar'
-
-export default defineComponent({
-  name: 'DashboardPage',
-  setup() {
-    const $q = useQuasar()
-
-    $q.notify({
-      type: 'positive',
-      message: 'Danger, Will Robinson! Danger!'
-    })
-
-    return {
-      options: {
-        chart: {
-          id: 'apex-donut'
-        },
-        colors: [
-          getCssVar('secondary'),
-          getCssVar('accent'),
-          getCssVar('positive'),
-          getCssVar('primary'),
-          getCssVar('negative'),
-          getCssVar('info')
-        ],
-        markers: {
-          size: 4,
-          hover: {
-            sizeOffset: 6
-          }
-        },
-        labels: [
-          'Asia',
-          'Africa',
-          'Europe',
-          'North America',
-          'South America',
-          'Oceania'
-        ]
-      },
-      series: [
-        469457616,
-        139367644,
-        745173774,
-        595783465,
-        434254119,
-        444917240
-      ]
-    }
-  }
-});
-</script> -->
-
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useQuasar, getCssVar } from 'quasar'
@@ -200,13 +145,7 @@ const series = [
   444917240
 ]
 
-// $q.notify({
-//   type: 'positive',
-//   message: 'Dashboard loaded'
-// })
-
 const profilesAsOptions = computed(() => {
-  // return profileStore.profiles.map(p => { return { value: p.id, 'label': p.name } })
   return profileStore.profiles.map(p => ({ value: p.id, label: p.name }))
 })
 const selectedProfiles = ref<number[]>([])
