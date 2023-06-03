@@ -11,11 +11,13 @@ export default boot(async ({ router }) => {
         if (to.path == '/login') {
             console.log('[simpleauth.beforeEach] always pass to login')
             next()
+            return
         }
         await authStore.init()
         if (authStore.user?.authenticated) {
             console.log('[simpleauth.beforeEach] < pass')
             next()
+            return
         }
         console.log('[simpleauth.beforeEach] < reject')
         next({ path: '/login', query: { next: to.fullPath } })

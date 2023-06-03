@@ -2,17 +2,20 @@ import { defineStore } from 'pinia';
 import { Profile } from 'components/models';
 import { delay } from './utils'
 import { api } from '../boot/axios'
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useProfileStore = defineStore('profile', () => {
-  const loaded = ref(false)
+  const state = ref<string>('')
   const profiles = ref<Profile[]>([])
   const profile = ref<Profile>()
+  const loaded = computed<boolean>(() => state.value == 'LOADED')
 
   async function load() {
-    console.log(`[profile.load] > loaded=${loaded.value}`)
+    console.log(`[profile.load] > loaded=${state.value}`)
     // console.log(`[profile] > this.$api = ${this.$api}`)
-    if (!loaded.value) {
+    if (state.value == '') {
+      state.value = 'LOADING'
+
       console.log('[profile.load] > fake timeout...')
       await delay(500)
 
@@ -21,14 +24,14 @@ export const useProfileStore = defineStore('profile', () => {
       if (response.status == 200) {
         profiles.value = response.data
       }
-      loaded.value = true
+      state.value = 'LOADED'
     }
     console.log('[profile.load] <')
   }
 
   async function reload() {
     console.log('[profile.reload] >')
-    loaded.value = false
+    state.value = ''
     // this.profiles = []
     await load()
     console.log('[profile.reload] <')
@@ -36,7 +39,7 @@ export const useProfileStore = defineStore('profile', () => {
 
   async function getProfile(profileId: number): Promise<Profile | undefined> {
     console.log(`[profile.getProfile] > profileId=${profileId}`)
-    if (!loaded.value) {
+    if (state.value != 'LOADED') {
       await load()
     } else {
       await delay(500)
@@ -49,7 +52,7 @@ export const useProfileStore = defineStore('profile', () => {
   }
 
   return {
-    loaded, profiles, profile,
+    state, loaded, profiles, profile,
     load, reload,
     getProfile
   }

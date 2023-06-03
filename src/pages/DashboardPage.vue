@@ -120,13 +120,7 @@ import { Application } from 'src/components/models';
 const $q = useQuasar()
 
 const profileStore = useProfileStore()
-profileStore.load().finally(() => {
-  $q.notify({
-    type: 'positive',
-    message: 'Dashboard loaded'
-  })
-})
-
+profileStore.load()
 
 const chartData = {
   options: {
@@ -192,7 +186,7 @@ const tableColumns = [
   //   sortable: true
   // },
   { name: 'name', align: 'left', label: 'Application', field: 'name' },
-  { name: 'duration', align: 'right', label: 'Duration', field: 'duration' },
+  { name: 'duration', align: 'left', label: 'Duration', field: 'duration' },
 ]
 const tableItems = ref<Application[]>([])
 
