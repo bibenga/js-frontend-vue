@@ -1,0 +1,16 @@
+{
+    "items": [
+        {
+            "name": "Safari",
+            "duration": 1000
+        },
+        {
+            "name": "Firefox",
+            "duration": 2000
+        },
+        {
+            "name": "Chrome",
+            "duration": 500
+        }
+    ]
+}

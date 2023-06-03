@@ -19,3 +19,8 @@ export interface User {
   readonly authenticated: boolean,
   readonly avatar?: string;
 }
+
+export interface Application {
+  readonly name: string;
+  readonly duration: number;
+}

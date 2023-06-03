@@ -42,7 +42,8 @@
             <div class="text-h6">Applications</div>
           </q-card-section>
           <q-scroll-area style="height: 200px;">
-            <q-markup-table>
+            <q-table :rows="tableItems" :columns="tableColumns" row-key="name" />
+            <!-- <q-markup-table>
               <thead>
                 <tr>
                   <th class="text-left">Dessert (100g serving)</th>
@@ -77,7 +78,7 @@
                   <td class="text-right">9</td>
                 </tr>
               </tbody>
-            </q-markup-table>
+            </q-markup-table> -->
           </q-scroll-area>
         </q-card>
       </div>
@@ -101,7 +102,7 @@
             <div class="text-h6">Locations</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
-            <apexchart height="200" type="pie" :options="options" :series="series"></apexchart>
+            <apexchart height="200" type="pie" :options="chartData.options" :series="chartData.series"></apexchart>
           </q-card-section>
         </q-card>
       </div>
@@ -113,6 +114,8 @@
 import { ref, computed } from 'vue'
 import { useQuasar, getCssVar } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
+import { useApplicationStore } from 'stores/applications';
+import { Application } from 'src/components/models';
 
 const $q = useQuasar()
 
@@ -124,41 +127,44 @@ profileStore.load().finally(() => {
   })
 })
 
-const options = {
-  chart: {
-    id: 'apex-donut'
+
+const chartData = {
+  options: {
+    chart: {
+      id: 'apex-donut'
+    },
+    colors: [
+      getCssVar('secondary'),
+      getCssVar('accent'),
+      getCssVar('positive'),
+      getCssVar('primary'),
+      getCssVar('negative'),
+      getCssVar('info')
+    ],
+    markers: {
+      size: 4,
+      hover: {
+        sizeOffset: 6
+      }
+    },
+    labels: [
+      'Asia',
+      'Africa',
+      'Europe',
+      'North America',
+      'South America',
+      'Oceania'
+    ]
   },
-  colors: [
-    getCssVar('secondary'),
-    getCssVar('accent'),
-    getCssVar('positive'),
-    getCssVar('primary'),
-    getCssVar('negative'),
-    getCssVar('info')
-  ],
-  markers: {
-    size: 4,
-    hover: {
-      sizeOffset: 6
-    }
-  },
-  labels: [
-    'Asia',
-    'Africa',
-    'Europe',
-    'North America',
-    'South America',
-    'Oceania'
+  series: [
+    469457616,
+    139367644,
+    745173774,
+    595783465,
+    434254119,
+    444917240
   ]
 }
-const series = [
-  469457616,
-  139367644,
-  745173774,
-  595783465,
-  434254119,
-  444917240
-]
 
 const profilesAsOptions = computed(() => {
   return profileStore.profiles.map(p => ({
@@ -174,5 +180,28 @@ profileStore.load().then(() => {
 function onSelectProfiles(value: number[]) {
   console.log(value)
 }
+
+const tableColumns = [
+  // {
+  //   name: 'name',
+  //   required: true,
+  //   label: 'Application',
+  //   align: 'left',
+  //   field: row => row.name,
+  //   format: val => `${val}`,
+  //   sortable: true
+  // },
+  { name: 'name', align: 'left', label: 'Application', field: 'name' },
+  { name: 'duration', align: 'right', label: 'Duration', field: 'duration' },
+]
+const tableItems = ref<Application[]>([])
+
+const applicationStore = useApplicationStore()
+applicationStore.list().then((items: Application[] | undefined) => {
+  console.log(items)
+  if (items != undefined) {
+    tableItems.value = items
+  }
+})
 
 </script>

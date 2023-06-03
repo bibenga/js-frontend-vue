@@ -9,19 +9,3 @@ const props = defineProps<{
 }>()
 </script>
 
-<!-- <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-  name: 'SimpleComponent',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-  },
-  setup() {
-    return {};
-  },
-});
-</script> -->
