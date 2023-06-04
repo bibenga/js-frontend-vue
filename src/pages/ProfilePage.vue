@@ -99,7 +99,7 @@ export default defineComponent({
 
   props: {
     // always string, why do we recive a string?
-    profileId: { type: Number, required: true },
+    profileId: { type: String, required: true },
   },
 
   preFetch({ store, currentRoute, previousRoute, /*redirect,*/ urlPath, publicPath }) {

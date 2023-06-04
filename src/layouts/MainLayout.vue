@@ -181,6 +181,7 @@ watch(() => $q.dark.isActive, val => {
 
 const leftDrawerOpen = ref(false)
 
+// todo: what is the correct flow for initialize store?
 const authStore = useAuthStore()
 authStore.init()
 

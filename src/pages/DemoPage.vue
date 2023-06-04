@@ -83,7 +83,7 @@ export default defineComponent({
   inject: ['layoutProp'],
   // inject: { layoutOlala: { from: 'layoutProp' } },
 
-  async preFetch({ store, currentRoute, previousRoute, redirect, urlPath, publicPath }) {
+  async preFetch({ store, currentRoute, previousRoute, urlPath, publicPath }) {
     // return store.dispatch('fetchItem', currentRoute.params.id)
     console.log(`[IndexPage] preFetch: store=${store}, `
       + `currentRoute=${currentRoute.fullPath}, `
@@ -110,7 +110,7 @@ export default defineComponent({
     // ------------------
     var profileStore = useProfileStore()
     const { profiles, loaded } = storeToRefs(profileStore)
-    profileStore.$onAction(({ name, store, args, after, onError }) => {
+    profileStore.$onAction(({ name, args, after, onError }) => {
       const startTime = Date.now()
       console.log(`[ProfileStore] Start "${name}" with params [${args.join(', ')}].`)
       after(result => {
@@ -124,7 +124,6 @@ export default defineComponent({
         )
       })
     })
-    // profileStore.reload()
 
     // ------------------
     const todos = ref<Todo[]>([

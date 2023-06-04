@@ -10,11 +10,11 @@ export default defineComponent({
   name: 'App',
 
   preFetch({ }) {
-    console.log('[app] preFetch')
+    console.log('[App] preFetch')
   },
 
   setup() {
-    console.log('[app] setup')
+    console.log('[App] setup')
   },
 
   created() {

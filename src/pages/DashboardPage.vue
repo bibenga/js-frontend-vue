@@ -4,7 +4,7 @@
 
     <div>
       <q-option-group :options="profilesAsOptions" type="checkbox" inline v-model="selectedProfiles"
-        @update:model-value="onSelectProfiles" />
+        @update:model-value="onSelectedProfilesChanged" />
     </div>
 
     <div class="row">
@@ -43,42 +43,6 @@
           </q-card-section>
           <q-scroll-area style="height: 200px;">
             <q-table :rows="tableItems" :columns="tableColumns" row-key="name" />
-            <!-- <q-markup-table>
-              <thead>
-                <tr>
-                  <th class="text-left">Dessert (100g serving)</th>
-                  <th class="text-right">Calories</th>
-                  <th class="text-right">Fat (g)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="text-left">Frozen Yogurt</td>
-                  <td class="text-right">159</td>
-                  <td class="text-right">6</td>
-                </tr>
-                <tr>
-                  <td class="text-left">Ice cream sandwich</td>
-                  <td class="text-right">237</td>
-                  <td class="text-right">9</td>
-                </tr>
-                <tr>
-                  <td class="text-left">Ice cream sandwich</td>
-                  <td class="text-right">237</td>
-                  <td class="text-right">9</td>
-                </tr>
-                <tr>
-                  <td class="text-left">Ice cream sandwich</td>
-                  <td class="text-right">237</td>
-                  <td class="text-right">9</td>
-                </tr>
-                <tr>
-                  <td class="text-left">Ice cream sandwich</td>
-                  <td class="text-right">237</td>
-                  <td class="text-right">9</td>
-                </tr>
-              </tbody>
-            </q-markup-table> -->
           </q-scroll-area>
         </q-card>
       </div>
@@ -110,17 +74,22 @@
   </q-page>
 </template>
 
+<script lang="ts">
+export default {
+  preFetch() {
+    console.log('running preFetch')
+  }
+}
+</script>
+
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useQuasar, getCssVar } from 'quasar'
+import { ref, computed, watch } from 'vue'
+import { getCssVar } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
 import { useApplicationStore } from 'stores/applications';
 import { Application } from 'src/components/models';
 
-const $q = useQuasar()
-
 const profileStore = useProfileStore()
-profileStore.load()
 
 const chartData = {
   options: {
@@ -160,6 +129,26 @@ const chartData = {
   ]
 }
 
+// profileStore.$onAction(({ name, args, after, onError }) => {
+//   const startTime = Date.now()
+//   console.log(`[ProfileStore] Start "${name}" with params [${args.join(', ')}].`)
+//   after(result => {
+//     console.log(
+//       `[dashboard ProfileStore] Finished "${name}" after ${Date.now() - startTime}ms -> ${result}.`
+//     )
+//   })
+//   onError(error => {
+//     console.warn(
+//       `[dashboard ProfileStore] Failed "${name}" after ${Date.now() - startTime}ms -> ${error}.`
+//     )
+//   })
+// })
+// // profileStore.load()
+// profileStore.$subscribe((mutation, state) => {
+//   console.log('[dashboard ProfileStore.$subscribe]', mutation, state)
+//   // react to store changes
+// })
+
 const profilesAsOptions = computed(() => {
   return profileStore.profiles.map(p => ({
     value: p.id,
@@ -168,23 +157,21 @@ const profilesAsOptions = computed(() => {
   }))
 })
 const selectedProfiles = ref<number[]>([])
-profileStore.load().then(() => {
-  selectedProfiles.value = profileStore.profiles.map(p => p.id)
-})
-function onSelectProfiles(value: number[]) {
+watch(
+  () => profileStore.loaded,
+  val => {
+    console.log('profileStore.loaded - ', profileStore.loaded)
+    if (val && selectedProfiles.value.length == 0) {
+      selectedProfiles.value = profileStore.profiles.map(p => p.id)
+    }
+  },
+  { immediate: true }
+)
+function onSelectedProfilesChanged(value: number[]) {
   console.log(value)
 }
 
 const tableColumns = [
-  // {
-  //   name: 'name',
-  //   required: true,
-  //   label: 'Application',
-  //   align: 'left',
-  //   field: row => row.name,
-  //   format: val => `${val}`,
-  //   sortable: true
-  // },
   { name: 'name', align: 'left', label: 'Application', field: 'name' },
   { name: 'duration', align: 'left', label: 'Duration', field: 'duration' },
 ]
