@@ -9,7 +9,7 @@ import { defineComponent } from 'vue';
 export default defineComponent({
   name: 'App',
 
-  preFetch({ }) {
+  preFetch() {
     console.log('[App] preFetch')
   },
 
