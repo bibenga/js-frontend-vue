@@ -66,7 +66,8 @@
             <div class="text-h6">Locations</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
-            <apexchart height="200" type="pie" :options="chartData.options" :series="chartData.series"></apexchart>
+            <apexchart v-if="chartData != undefined" height="200" :options="chartData.options" :series="chartData.series">
+            </apexchart>
           </q-card-section>
         </q-card>
       </div>
@@ -77,7 +78,7 @@
 <script lang="ts">
 export default {
   preFetch() {
-    console.log('running preFetch')
+    console.log('[Dashboard] running preFetch')
   }
 }
 </script>
@@ -88,46 +89,51 @@ import { getCssVar } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
 import { useApplicationStore } from 'stores/applications';
 import { Application } from 'src/components/models';
+import { api } from 'src/boot/axios';
 
 const profileStore = useProfileStore()
 
-const chartData = {
-  options: {
-    chart: {
-      id: 'apex-donut'
-    },
-    colors: [
-      getCssVar('secondary'),
-      getCssVar('accent'),
-      getCssVar('positive'),
-      getCssVar('primary'),
-      getCssVar('negative'),
-      getCssVar('info')
-    ],
-    markers: {
-      size: 4,
-      hover: {
-        sizeOffset: 6
-      }
-    },
-    labels: [
-      'Asia',
-      'Africa',
-      'Europe',
-      'North America',
-      'South America',
-      'Oceania'
-    ]
-  },
-  series: [
-    469457616,
-    139367644,
-    745173774,
-    595783465,
-    434254119,
-    444917240
-  ]
+// 
+const chartData = ref()
+async function loadChartData() {
+  const response = await api.get('/chart.json')
+  if (response.status == 200) {
+    const data = response.data
+    chartData.value = {
+      options: {
+        chart: {
+          id: 'apex-donut',
+          type: 'donut'
+        },
+        colors: [
+          getCssVar('secondary'),
+          getCssVar('accent'),
+          getCssVar('positive'),
+          getCssVar('primary'),
+          getCssVar('negative'),
+          getCssVar('info')
+        ],
+        // dataLabels: ['#FFFFFF'],
+        markers: {
+          size: 4,
+          hover: {
+            sizeOffset: 6
+          }
+        },
+        legend: {
+          labels: {
+            // colors: undefined,
+            useSeriesColors: true
+          },
+        },
+        labels: data.labels
+      },
+      series: data.series
+    }
+    console.log('chart.json>', data)
+  }
 }
+loadChartData()
 
 // profileStore.$onAction(({ name, args, after, onError }) => {
 //   const startTime = Date.now()

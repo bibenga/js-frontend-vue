@@ -165,6 +165,21 @@
   </q-layout>
 </template>
 
+<script lang="ts">
+export default {
+  preFetch({ store, currentRoute, previousRoute, urlPath, publicPath }) {
+    const profileStore = useProfileStore()
+    profileStore.load()
+    console.log(`[MainLayout] preFetch: store=${store}, `
+      + `currentRoute=${currentRoute.fullPath}, `
+      + `previousRoute=${previousRoute.fullPath}, `
+      + `urlPath=${urlPath}, `
+      + `publicPath=${publicPath}, `
+    )
+  }
+}
+</script>
+
 <script setup lang="ts">
 import { ref, watch, provide } from 'vue';
 import { useQuasar } from 'quasar'
