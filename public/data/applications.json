@@ -2,15 +2,18 @@
     "items": [
         {
             "name": "Safari",
-            "duration": 1000
+            "duration": 1000,
+            "profileId": 1
         },
         {
             "name": "Firefox",
-            "duration": 2000
+            "duration": 2000,
+            "profileId": 2
         },
         {
             "name": "Chrome",
-            "duration": 500
+            "duration": 500,
+            "profileId": 3
         }
     ]
 }

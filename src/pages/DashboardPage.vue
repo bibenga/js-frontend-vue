@@ -93,7 +93,6 @@ import { api } from 'src/boot/axios';
 
 const profileStore = useProfileStore()
 
-// 
 const chartData = ref()
 async function loadChartData() {
   const response = await api.get('/chart.json')
@@ -113,7 +112,6 @@ async function loadChartData() {
           getCssVar('negative'),
           getCssVar('info')
         ],
-        // dataLabels: ['#FFFFFF'],
         markers: {
           size: 4,
           hover: {
@@ -135,26 +133,6 @@ async function loadChartData() {
 }
 loadChartData()
 
-// profileStore.$onAction(({ name, args, after, onError }) => {
-//   const startTime = Date.now()
-//   console.log(`[ProfileStore] Start "${name}" with params [${args.join(', ')}].`)
-//   after(result => {
-//     console.log(
-//       `[dashboard ProfileStore] Finished "${name}" after ${Date.now() - startTime}ms -> ${result}.`
-//     )
-//   })
-//   onError(error => {
-//     console.warn(
-//       `[dashboard ProfileStore] Failed "${name}" after ${Date.now() - startTime}ms -> ${error}.`
-//     )
-//   })
-// })
-// // profileStore.load()
-// profileStore.$subscribe((mutation, state) => {
-//   console.log('[dashboard ProfileStore.$subscribe]', mutation, state)
-//   // react to store changes
-// })
-
 const profilesAsOptions = computed(() => {
   return profileStore.profiles.map(p => ({
     value: p.id,
@@ -165,7 +143,7 @@ const profilesAsOptions = computed(() => {
 const selectedProfiles = ref<number[]>([])
 watch(
   () => profileStore.loaded,
-  val => {
+  (val) => {
     console.log('profileStore.loaded - ', profileStore.loaded)
     if (val && selectedProfiles.value.length == 0) {
       selectedProfiles.value = profileStore.profiles.map(p => p.id)
@@ -178,8 +156,9 @@ function onSelectedProfilesChanged(value: number[]) {
 }
 
 const tableColumns = [
-  { name: 'name', align: 'left', label: 'Application', field: 'name' },
-  { name: 'duration', align: 'left', label: 'Duration', field: 'duration' },
+  { name: 'profile', label: 'Profile', field: 'profileId', align: 'left' },
+  { name: 'name', label: 'Name', field: 'name', align: 'left' },
+  { name: 'duration', label: 'Duration', field: 'duration', align: 'right' },
 ]
 const tableItems = ref<Application[]>([])
 
