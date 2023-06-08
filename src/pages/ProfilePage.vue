@@ -150,9 +150,10 @@ export default defineComponent({
 
   created() {
     console.log('[ProfilePage] created')
-    watch(
-      () => this.$route.params,
-      () => { this.fetchData() },
+    // this.$route.path.startsWith
+    this.$watch(
+      () => this.$route.params?.profileId,
+      (newProfileId) => { this.fetchData(newProfileId) },
       { immediate: true }
     )
   },
@@ -168,26 +169,29 @@ export default defineComponent({
   },
 
   methods: {
-    fetchData() {
-      console.log('[ProfilePage] fetchData')
+    fetchData(profileId: string | undefined) {
+      console.log('[ProfilePage] fetchData', profileId)
+      if (profileId === undefined) {
+        return
+      }
 
       this.loaded = false
       this.profile = undefined
       this.$q.notify({
         type: 'ongoing',
-        message: `Loading profile ${this.profileId}`,
+        message: `Loading profile ${profileId}`,
         timeout: 1000,
       })
       setTimeout(() => {
         // this.store = store
         this.loaded = true
         this.profile = {
-          id: Number(this.profileId),
+          id: Number(profileId),
           name: 'Your was hacked!'
         }
         this.$q.notify({
           type: 'positive',
-          message: `Profile ${this.profileId} loaded`,
+          message: `Profile ${profileId} loaded`,
           timeout: 1000,
         })
       }, 3000)
