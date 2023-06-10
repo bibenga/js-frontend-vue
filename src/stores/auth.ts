@@ -24,7 +24,7 @@ export const useAuthStore = defineStore('auth', () => {
 
       try {
         const response = await api.get('/user.json')
-        console.log('[auth.load]', response)
+        console.log('[auth.load]', response.status)
         if (response.status == 200) {
           user.value = response.data
           loaded.value = true

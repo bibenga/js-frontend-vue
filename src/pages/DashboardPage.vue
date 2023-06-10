@@ -66,8 +66,14 @@
             <div class="text-h6">Locations</div>
           </q-card-section>
           <q-card-section class="q-pt-none">
-            <apexchart v-if="chartData != undefined" height="200" :options="chartData.options" :series="chartData.series">
-            </apexchart>
+            <q-no-ssr>
+              <AsyncApexChart v-if="chartData != undefined" height="200" :options="chartData.options"
+                :series="chartData.series">
+              </AsyncApexChart>
+              <!-- <apexchart v-if="chartData != undefined" height="200" :options="chartData.options"
+                :series="chartData.series">
+              </apexchart> -->
+            </q-no-ssr>
           </q-card-section>
         </q-card>
       </div>
@@ -76,20 +82,28 @@
 </template>
 
 <script lang="ts">
+// import { defineAsyncComponent } from 'vue'
 export default {
   preFetch() {
     console.log('[Dashboard] running preFetch')
-  }
+  },
+  // components: {
+  //   AsyncApexChart: defineAsyncComponent(() =>
+  //     import('vue3-apexcharts')
+  //   )
+  // }
 }
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, defineAsyncComponent } from 'vue'
 import { getCssVar } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
 import { useApplicationStore } from 'stores/applications';
 import { Application } from 'src/components/models';
 import { api } from 'src/boot/axios';
+
+const AsyncApexChart = defineAsyncComponent(() => import('vue3-apexcharts'));
 
 const profileStore = useProfileStore()
 

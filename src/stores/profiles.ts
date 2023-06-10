@@ -20,7 +20,7 @@ export const useProfileStore = defineStore('profile', () => {
       await delay(500)
 
       const response = await api.get('/profiles.json')
-      console.log('[profile.load]', response)
+      console.log('[profile.load]', response.status)
       if (response.status == 200) {
         profiles.value = response.data
       }

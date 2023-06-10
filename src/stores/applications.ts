@@ -12,7 +12,7 @@ export const useApplicationStore = defineStore('application', () => {
     await delay(500)
 
     const response = await api.get('/applications.json')
-    console.log('[application.load]', response)
+    console.log('[application.load]', response.status)
     if (response.status == 200) {
       const items = response.data.items
       console.log('[application.load] <', items)
