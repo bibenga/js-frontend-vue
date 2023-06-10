@@ -1,10 +1,12 @@
 import { boot } from 'quasar/wrappers'
 import { useAuthStore } from 'stores/auth'
+import { useProfileStore } from 'stores/profiles'
 
 export default boot(async ({ router }) => {
     console.log('[simpleauth.init] >')
 
     const authStore = useAuthStore()
+    const profileStore = useProfileStore()
 
     router.beforeEach(async (to, from, next) => {
         console.log(`[simpleauth.beforeEach] > ${from.fullPath} -> ${to.fullPath}`)
@@ -14,6 +16,7 @@ export default boot(async ({ router }) => {
             return
         }
         await authStore.init()
+        await profileStore.load()
         if (authStore.user?.authenticated) {
             console.log('[simpleauth.beforeEach] < pass')
             next()
