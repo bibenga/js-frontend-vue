@@ -2,12 +2,24 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import { AxiosInstance, AxiosError } from 'axios'
 
-const api: AxiosInstance = axios.create({
-    baseURL: '/data'
-})
+// const api: AxiosInstance = axios.create({
+//     // baseURL: 'http://127.0.0.1:9100/data',
+//     baseURL: '/data',
+// })
 
-export default boot(({ app }) => {
-    console.log('[axios] init')
+let api: AxiosInstance;
+
+export default boot(({ app, ssrContext }) => {
+    console.log(`[axios] init: ssrContext is null=${ssrContext == null}`)
+    if (ssrContext == null) {
+        api = axios.create({
+            baseURL: '/data',
+        })
+    } else {
+        api = axios.create({
+            baseURL: 'http://127.0.0.1:9100/data',
+        })
+    }
     // for use inside Vue files (Options API) through this.$axios and this.$api
 
     // headers doon't added when call using by the "api"

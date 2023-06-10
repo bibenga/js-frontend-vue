@@ -11,6 +11,7 @@
     "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "BROWSER=none quasar dev",
+    "dev:ssr": "BROWSER=none quasar dev -m ssr",
     "build": "quasar build",
     "test:unit": "vitest",
     "test:unit:ci": "vitest run"

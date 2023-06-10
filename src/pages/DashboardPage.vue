@@ -104,14 +104,14 @@ async function loadChartData() {
           id: 'apex-donut',
           type: 'donut'
         },
-        colors: [
-          getCssVar('secondary'),
-          getCssVar('accent'),
-          getCssVar('positive'),
-          getCssVar('primary'),
-          getCssVar('negative'),
-          getCssVar('info')
-        ],
+        // colors: [
+        //   getCssVar('secondary'),
+        //   getCssVar('accent'),
+        //   getCssVar('positive'),
+        //   getCssVar('primary'),
+        //   getCssVar('negative'),
+        //   getCssVar('info')
+        // ],
         markers: {
           size: 4,
           hover: {

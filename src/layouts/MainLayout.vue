@@ -171,8 +171,8 @@ export default {
     const profileStore = useProfileStore()
     profileStore.load()
     console.log(`[MainLayout] preFetch: store=${store}, `
-      + `currentRoute=${currentRoute.fullPath}, `
-      + `previousRoute=${previousRoute.fullPath}, `
+      + `currentRoute=${currentRoute?.fullPath}, `
+      + `previousRoute=${previousRoute?.fullPath}, `
       + `urlPath=${urlPath}, `
       + `publicPath=${publicPath}, `
     )

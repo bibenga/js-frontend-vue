@@ -105,8 +105,8 @@ export default defineComponent({
   preFetch({ store, currentRoute, previousRoute, /*redirect,*/ urlPath, publicPath }) {
     // return store.dispatch('fetchItem', currentRoute.params.id)
     console.log(`[ProfilePage] preFetch: store=${store}, `
-      + `currentRoute=${currentRoute.fullPath}, `
-      + `previousRoute=${previousRoute.fullPath}, `
+      + `currentRoute=${currentRoute?.fullPath}, `
+      + `previousRoute=${previousRoute?.fullPath}, `
       + `urlPath=${urlPath}, `
       + `publicPath=${publicPath}, `
     )

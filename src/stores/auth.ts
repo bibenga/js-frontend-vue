@@ -47,18 +47,18 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login() {
-    console.log('[auth.login] >', user)
+    console.log('[auth.login] >', user.value?.id)
     loaded.value = false
     await delay(1000)
     await init()
-    console.log('[auth.login] <', user)
+    console.log('[auth.login] <', user.value?.id)
   }
 
   async function logout() {
-    console.log('[auth.logout] >', user)
+    console.log('[auth.logout] >', user.value?.id)
     user.value = AnonymousUser
     loaded.value = true
-    console.log('[auth.logout] <', user)
+    console.log('[auth.logout] <', user.value?.id)
   }
 
   return {

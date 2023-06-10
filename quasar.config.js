@@ -30,7 +30,7 @@ module.exports = configure(function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
     boot: [
-      'apexcharts',
+      { path: 'apexcharts', server: false },
       'axios',
       'i18n',
       'simpleauth',
@@ -139,7 +139,7 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
     ssr: {
-      // ssrPwaHtmlFilename: 'offline.html', // do NOT use index.html as name!
+      ssrPwaHtmlFilename: 'offline.html', // do NOT use index.html as name!
       // will mess up SSR
 
       // extendSSRWebserverConf (esbuildConf) {},
