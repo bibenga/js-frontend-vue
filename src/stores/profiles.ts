@@ -1,10 +1,15 @@
 import { defineStore } from 'pinia';
 import { Profile } from 'components/models';
 import { delay } from './utils'
-import { api } from '../boot/axios'
-import { computed, ref } from 'vue';
+import { computed, inject, ref } from 'vue';
+import { AxiosInstance } from 'axios';
 
 export const useProfileStore = defineStore('profile', () => {
+  console.log('[profile.create] >')
+
+  const $api = inject<AxiosInstance>('$api')
+  console.log(`[profile.create] api=${$api}`)
+
   const state = ref<string>('')
   const profiles = ref<Profile[]>([])
   const profile = ref<Profile>()
@@ -19,7 +24,7 @@ export const useProfileStore = defineStore('profile', () => {
       console.log('[profile.load] > fake timeout...')
       await delay(500)
 
-      const response = await api.get('/profiles.json')
+      const response = await $api.get('/profiles.json')
       console.log('[profile.load]', response.status)
       if (response.status == 200) {
         profiles.value = response.data

@@ -71,7 +71,6 @@ import { defineComponent, ref } from 'vue';
 import { useQuasar, QSpinnerGears } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
 import { storeToRefs } from 'pinia'
-// import { api } from 'boot/axios';
 
 export default defineComponent({
   name: 'IndexPage',

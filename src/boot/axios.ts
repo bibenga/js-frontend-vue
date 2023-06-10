@@ -1,35 +1,31 @@
 import { boot } from 'quasar/wrappers'
-import axios from 'axios'
-import { AxiosInstance, AxiosError } from 'axios'
-
-const api: AxiosInstance = axios.create({
-    baseURL: '/data',
-})
+import { Cookies } from 'quasar'
+import axios, { AxiosInstance } from 'axios'
+import { inject } from 'vue'
 
 export default boot(({ app, ssrContext }) => {
-    console.log(`[axios] init: ssrContext is null=${ssrContext == null}`)
+    console.log(`[axios] init: SERVER=${process.env.SERVER}, ssrContext is null=${ssrContext == null}`)
+
+    let baseURL = ''
     if (ssrContext == null) {
-        api.defaults.baseURL = '/data'
+        baseURL = '/data'
     } else {
-        api.defaults.baseURL = 'http://127.0.0.1:9100/data'
+        baseURL = 'http://127.0.0.1:9100/data'
     }
+    const $api: AxiosInstance = axios.create({
+        baseURL: baseURL,
+    })
 
-    // headers doon't added when call using by the "api"
-    axios.defaults.headers.common['X-Api-Key-Axios'] = 'Axios';
-    axios.interceptors.request.use(
-        config => {
-            config.headers['X-Api-Key-Axios2'] = 'Axios2';
-            return config;
-        },
-        error => {
-            return Promise.reject(error);
-        }
-    );
+    const cookies = ssrContext != null ? Cookies.parseSSR(ssrContext) : Cookies
 
-    api.defaults.headers.common['X-Api-Key-Api'] = 'Api';
-    api.interceptors.request.use(
+    $api.defaults.headers.common['X-Api-Key-Api'] = 'Api';
+    $api.interceptors.request.use(
         config => {
             config.headers['X-Api-Key-Api2'] = 'Api2';
+            const session = cookies.get('session')
+            if (session) {
+                config.headers.XSessionId = `${session}`
+            }
             return config;
         },
         error => {
@@ -37,16 +33,20 @@ export default boot(({ app, ssrContext }) => {
         }
     );
 
-    // for use inside Vue files (Options API) through this.$axios and this.$api
-    app.config.globalProperties.$axios = axios
-    // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
-    //       so you won't necessarily have to import axios in each vue file
-
-    app.config.globalProperties.$api = api
-    // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
-    //       so you can easily perform requests against your app's API
+    // for use inside Vue files (Options API) through inject<>(), this.$axios and this.$api
+    app.config.globalProperties.$api = $api // this.$api
+    app.provide('$api', $api) // const $api = inject<AxiosInstance>('$api')
+    // app.config.globalProperties.$axios = axios // this.$axios
+    // app.provide('$axios', axios) // const $axios = inject<Axios>('$axios')
 })
 
-const isAxiosError = axios.isAxiosError
 
-export { axios, api, AxiosError, isAxiosError }
+function useApi(): AxiosInstance {
+    const $api = inject<AxiosInstance>('$api')
+    if ($api === undefined) {
+        throw Error('$api is not defined')
+    }
+    return $api
+}
+
+export { useApi }

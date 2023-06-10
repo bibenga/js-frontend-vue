@@ -96,20 +96,22 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, computed, watch, defineAsyncComponent } from 'vue'
-import { getCssVar } from 'quasar'
+import { ref, computed, inject, watch, defineAsyncComponent } from 'vue'
+// import { getCssVar } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
 import { useApplicationStore } from 'stores/applications';
 import { Application } from 'src/components/models';
-import { api } from 'src/boot/axios';
+import { AxiosInstance } from 'axios';
 
 const AsyncApexChart = defineAsyncComponent(() => import('vue3-apexcharts'));
+
+const $api = inject<AxiosInstance>('$api')
 
 const profileStore = useProfileStore()
 
 const chartData = ref()
 async function loadChartData() {
-  const response = await api.get('/chart.json')
+  const response = await $api.get('/chart.json')
   if (response.status == 200) {
     const data = response.data
     chartData.value = {

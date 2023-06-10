@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { delay } from './utils'
-import { api, axios } from '../boot/axios'
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { User } from 'components/models';
+import axios, { AxiosInstance } from 'axios';
 
 const AnonymousUser: User = {
   'id': 0,
@@ -11,7 +11,10 @@ const AnonymousUser: User = {
 }
 
 export const useAuthStore = defineStore('auth', () => {
-  console.log('[auth.create]')
+  console.log('[auth.create] >')
+
+  const $api = inject<AxiosInstance>('$api')
+  console.log(`[auth.create] api=${$api}`)
 
   const loaded = ref(false)
   const user = ref<User>()
@@ -23,7 +26,7 @@ export const useAuthStore = defineStore('auth', () => {
       await delay(500)
 
       try {
-        const response = await api.get('/user.json')
+        const response = await $api.get('/user.json')
         console.log('[auth.load]', response.status)
         if (response.status == 200) {
           user.value = response.data
