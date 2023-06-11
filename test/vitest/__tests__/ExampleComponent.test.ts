@@ -10,49 +10,49 @@ installQuasarPlugin();
 vi.mock('axios')
 
 describe('example Component', () => {
-  beforeEach(() => {
-    ;
-  })
+    beforeEach(() => {
+        ;
+    })
 
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
+    afterEach(() => {
+        vi.restoreAllMocks()
+    })
 
-  it('should mount component with todos', () => {
-    const wrapper = mount(ExampleComponent, {
-      props: {
-        title: 'Hello',
-        // totalCount: 4,
-        meta: { totalCount: 4 } as Meta,
-        todos: [
-          { id: 1, content: 'Hallo' },
-          { id: 2, content: 'Hoi' },
-        ] as Todo[],
-      },
+    it('should mount component with todos', () => {
+        const wrapper = mount(ExampleComponent, {
+            props: {
+                title: 'Hello',
+                // totalCount: 4,
+                meta: { totalCount: 4 } as Meta,
+                todos: [
+                    { id: 1, content: 'Hallo' },
+                    { id: 2, content: 'Hoi' },
+                ] as Todo[],
+            },
+        });
+        expect(wrapper.vm.clickCount).toBe(0);
+        // expect(wrapper.find('.q-item')).toBe(0);
+        wrapper.find('.q-item').trigger('click');
+        expect(wrapper.vm.clickCount).toBe(1);
     });
-    expect(wrapper.vm.clickCount).toBe(0);
-    // expect(wrapper.find('.q-item')).toBe(0);
-    wrapper.find('.q-item').trigger('click');
-    expect(wrapper.vm.clickCount).toBe(1);
-  });
 
-  it('should mount component without todos', () => {
-    const wrapper = mount(ExampleComponent, {
-      props: {
-        title: 'Hello',
-        meta: { totalCount: 0 },
-      },
+    it('should mount component without todos', () => {
+        const wrapper = mount(ExampleComponent, {
+            props: {
+                title: 'Hello',
+                meta: { totalCount: 0 },
+            },
+        });
+        expect(wrapper.findAll('.q-item')).toHaveLength(0);
     });
-    expect(wrapper.findAll('.q-item')).toHaveLength(0);
-  });
 
-  it('mock axios', async () => {
-    const usersMock = [{ id: 1 }, { id: 2 }]
-    axios.get.mockResolvedValue({ data: usersMock })
+    it('mock axios', async () => {
+        const usersMock = [{ id: 1 }, { id: 2 }]
+        axios.get.mockResolvedValue({ data: usersMock })
 
-    const users = (await axios.get('/users')).data
+        const users = (await axios.get('/users')).data
 
-    expect(axios.get).toHaveBeenCalledWith('/users')
-    expect(users).toStrictEqual(usersMock)
-  });
+        expect(axios.get).toHaveBeenCalledWith('/users')
+        expect(users).toStrictEqual(usersMock)
+    });
 });

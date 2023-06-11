@@ -1,26 +1,26 @@
 export interface Todo {
-  id: number;
-  content: string;
+    id: number;
+    content: string;
 }
 
 export interface Meta {
-  totalCount: number;
+    totalCount: number;
 }
 
 export interface Profile {
-  readonly id: number;
-  readonly name: string;
-  readonly icon?: string;
+    readonly id: number;
+    readonly name: string;
+    readonly icon?: string;
 }
 
 export interface User {
-  readonly id: number;
-  readonly name: string;
-  readonly authenticated: boolean,
-  readonly avatar?: string;
+    readonly id: number;
+    readonly name: string;
+    readonly authenticated: boolean,
+    readonly avatar?: string;
 }
 
 export interface Application {
-  readonly name: string;
-  readonly duration: number;
+    readonly name: string;
+    readonly duration: number;
 }

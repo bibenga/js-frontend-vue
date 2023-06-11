@@ -1,21 +1,21 @@
 <template>
-  <div>
-    <p>{{ title }}</p>
-    <!-- <ul>
+    <div>
+        <p>{{ title }}</p>
+        <!-- <ul>
       <li v-for="todo in todos" :key="todo.id" @click="increment">
         {{ todo.id }} - {{ todo.content }}
       </li>
     </ul> -->
-    <q-list>
-      <q-item v-for="todo in todos" :key="todo.id" @click="increment" clickable>
-        {{ todo.id }} - {{ todo.content }}
-      </q-item>
-    </q-list>
+        <q-list>
+            <q-item v-for="todo in todos" :key="todo.id" @click="increment" clickable>
+                {{ todo.id }} - {{ todo.content }}
+            </q-item>
+        </q-list>
 
-    <p>Count: {{ todoCount }} / {{ meta.totalCount }}</p>
-    <p>Active: {{ active ? 'yes' : 'no' }}</p>
-    <p>Clicks on todos: {{ clickCount }}</p>
-  </div>
+        <p>Count: {{ todoCount }} / {{ meta.totalCount }}</p>
+        <p>Active: {{ active ? 'yes' : 'no' }}</p>
+        <p>Clicks on todos: {{ clickCount }}</p>
+    </div>
 </template>
 
 <script lang="ts">
@@ -23,41 +23,41 @@ import { defineComponent, PropType, computed, ref, toRef, Ref } from 'vue';
 import { Todo, Meta } from './models';
 
 function useClickCount() {
-  const clickCount = ref(0);
-  function increment() {
-    clickCount.value += 1
-    return clickCount.value;
-  }
+    const clickCount = ref(0);
+    function increment() {
+        clickCount.value += 1
+        return clickCount.value;
+    }
 
-  return { clickCount, increment };
+    return { clickCount, increment };
 }
 
 function useDisplayTodo(todos: Ref<Todo[]>) {
-  const todoCount = computed(() => todos.value.length);
-  return { todoCount };
+    const todoCount = computed(() => todos.value.length);
+    return { todoCount };
 }
 
 export default defineComponent({
-  name: 'ExampleComponent',
-  props: {
-    title: {
-      type: String,
-      required: true
+    name: 'ExampleComponent',
+    props: {
+        title: {
+            type: String,
+            required: true
+        },
+        todos: {
+            type: Array as PropType<Todo[]>,
+            default: () => []
+        },
+        meta: {
+            type: Object as PropType<Meta>,
+            required: true
+        },
+        active: {
+            type: Boolean
+        }
     },
-    todos: {
-      type: Array as PropType<Todo[]>,
-      default: () => []
+    setup(props) {
+        return { ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) };
     },
-    meta: {
-      type: Object as PropType<Meta>,
-      required: true
-    },
-    active: {
-      type: Boolean
-    }
-  },
-  setup(props) {
-    return { ...useClickCount(), ...useDisplayTodo(toRef(props, 'todos')) };
-  },
 });
 </script>

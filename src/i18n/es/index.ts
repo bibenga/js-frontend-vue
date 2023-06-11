@@ -1,4 +1,4 @@
 export default {
-  hello: '¡Hola!',
-  goodby: 'Adios'
+    hello: '¡Hola!',
+    goodby: 'Adios'
 };
