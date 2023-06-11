@@ -11,6 +11,7 @@
  */
 import express from 'express';
 import compression from 'compression';
+import helmet from 'helmet';
 import {
   ssrClose,
   ssrCreate,
@@ -36,8 +37,9 @@ export const create = ssrCreate((/* { ... } */) => {
   // place here any middlewares that
   // absolutely need to run before anything else
   if (process.env.PROD) {
-    app.use(compression());
+    app.use(helmet());
   }
+  app.use(compression());
 
   return app;
 });
