@@ -12,7 +12,9 @@
     "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "BROWSER=none quasar dev",
     "dev:ssr": "BROWSER=none quasar dev -m ssr",
+    "dev:pwa": "BROWSER=none quasar dev -m pwa",
     "build": "quasar build",
+    "build:ssr": "quasar build -m ssr",
     "test:unit": "vitest",
     "test:unit:ci": "vitest run"
   },
@@ -44,7 +46,14 @@
     "eslint-plugin-vue": "^9.14.1",
     "prettier": "^2.8.8",
     "typescript": "5.0.x",
-    "vitest": "^0.31.0"
+    "vitest": "^0.31.0",
+    "workbox-build": "^6.6.0",
+    "workbox-cacheable-response": "^6.6.0",
+    "workbox-core": "^6.6.0",
+    "workbox-expiration": "^6.6.0",
+    "workbox-precaching": "^6.6.0",
+    "workbox-routing": "^6.6.0",
+    "workbox-strategies": "^6.6.0"
   },
   "engines": {
     "node": "^18 || ^16 || ^14.19",
