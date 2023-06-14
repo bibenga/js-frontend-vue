@@ -43,12 +43,12 @@ export default boot(({ app, ssrContext }) => {
 })
 
 
-function useApi(): AxiosInstance {
+function useApi(): { $api: AxiosInstance; isAxiosError: typeof axios.isAxiosError; } {
     const $api = inject<AxiosInstance>('$api')
     if ($api === undefined) {
-        throw Error('$api is not defined')
+        throw Error('$api is not defined inside app')
     }
-    return $api
+    return { $api: $api, isAxiosError: axios.isAxiosError }
 }
 
 export { useApi }

@@ -3,25 +3,22 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-
-export default defineComponent({
-    name: 'App',
-
+// import { defineAsyncComponent } from 'vue'
+export default {
     preFetch() {
-        console.log('[App] preFetch')
+        console.log('[App] running preFetch')
     },
+}
+</script>
 
-    setup() {
-        console.log('[App] setup')
-    },
+<script setup lang="ts">
+import { onMounted, onBeforeMount } from 'vue'
 
-    created() {
-        console.log('[App] created')
-    },
+onBeforeMount(async () => {
+    console.log('[App] onBeforeMount')
+})
 
-    async beforeMount() {
-        console.log('[App] beforeMount')
-    },
-});
+onMounted(async () => {
+    console.log('[App] onMounted')
+})
 </script>

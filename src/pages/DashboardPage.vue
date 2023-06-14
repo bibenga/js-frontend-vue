@@ -82,22 +82,16 @@
 </template>
 
 <script lang="ts">
-// import { defineAsyncComponent } from 'vue'
 export default {
     preFetch() {
         console.log('[Dashboard] running preFetch')
     },
-    // components: {
-    //   AsyncApexChart: defineAsyncComponent(() =>
-    //     import('vue3-apexcharts')
-    //   )
-    // }
 }
 </script>
 
 <script setup lang="ts">
 import { ref, computed, inject, watch, defineAsyncComponent } from 'vue'
-// import { getCssVar } from 'quasar'
+// import { colors } from 'quasar'
 import { useProfileStore } from 'stores/profiles'
 import { useApplicationStore } from 'stores/applications';
 import { Application } from 'src/components/models';
@@ -121,12 +115,13 @@ async function loadChartData() {
                     type: 'donut'
                 },
                 // colors: [
-                //   getCssVar('secondary'),
-                //   getCssVar('accent'),
-                //   getCssVar('positive'),
-                //   getCssVar('primary'),
-                //   getCssVar('negative'),
-                //   getCssVar('info')
+                //     colors.getPaletteColor('indigo-10'),
+                //     colors.getPaletteColor('indigo-9'),
+                //     colors.getPaletteColor('indigo-8'),
+                //     colors.getPaletteColor('indigo-7'),
+                //     colors.getPaletteColor('indigo-6'),
+                //     colors.getPaletteColor('indigo-5'),
+                //     colors.getPaletteColor('indigo-4'),
                 // ],
                 markers: {
                     size: 4,
