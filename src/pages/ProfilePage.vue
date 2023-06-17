@@ -9,11 +9,6 @@
             <div>loaded => {{ loaded }}</div>
             <div>data => {{ profile }}</div>
             <div>data => {{ profile?.name }}</div>
-            <div>
-                store => {{ store.counter }} -
-                <q-btn @click="store.increment()">+</q-btn>
-                <q-btn @click="store.decrement()">-</q-btn>
-            </div>
         </div>
 
         <q-timeline color="secondary" layout="comfortable">
@@ -90,20 +85,8 @@
 </style>
 
 <script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
-import { useTextPairStore } from 'stores/TextPair'
-import { Profile } from 'components/models'
-import { onBeforeRouteLeave, onBeforeRouteUpdate, RouteLocationNormalized } from 'vue-router'
-
-export default defineComponent({
-    name: 'ProfilePage',
-
-    props: {
-        // always string, why do we recive a string?
-        profileId: { type: String, required: true },
-    },
-
-    preFetch({ store, currentRoute, previousRoute, /*redirect,*/ urlPath, publicPath }) {
+export default {
+    async preFetch({ store, currentRoute, previousRoute, urlPath, publicPath }) {
         // return store.dispatch('fetchItem', currentRoute.params.id)
         console.log(`[ProfilePage] preFetch: store=${store}, `
             + `currentRoute=${currentRoute?.fullPath}, `
@@ -111,92 +94,67 @@ export default defineComponent({
             + `urlPath=${urlPath}, `
             + `publicPath=${publicPath}, `
         )
-    },
+    }
+}
+</script>
 
-    setup(props) {
-        console.log(`[ProfilePage.setup] ${props.profileId}`)
-        // ------------------
-        onBeforeRouteLeave((to, from) => {
-            console.log(`[ProfilePage.setup.onBeforeRouteLeave] ${from.fullPath} -> ${to.fullPath}`)
+<script setup lang="ts">
+import { provide, ref, watch } from 'vue'
+import { Profile } from 'components/models'
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
+
+const props = defineProps<{
+    profileId: string
+}>()
+
+const $q = useQuasar()
+// const router = useRouter()
+const route = useRoute()
+
+onBeforeRouteLeave((to, from) => {
+    console.log(`[ProfilePage.onBeforeRouteLeave] ${from.fullPath} -> ${to.fullPath}`)
+})
+onBeforeRouteUpdate((to, from) => {
+    console.log(`[ProfilePage.onBeforeRouteUpdate] ${from.fullPath} -> ${to.fullPath}`)
+})
+
+const loaded = ref(false)
+const profile = ref<Profile>();
+provide('profile', profile)
+
+// const router = useRouter()
+const fetchData = (profileId: string | undefined) => {
+    console.log('[ProfilePage] fetchData', profileId, props.profileId)
+    if (profileId === undefined) {
+        return
+    }
+
+    loaded.value = false
+    profile.value = undefined
+    $q.notify({
+        type: 'ongoing',
+        message: `Loading profile ${profileId}`,
+        timeout: 1000,
+    })
+    setTimeout(() => {
+        // this.store = store
+        loaded.value = true
+        profile.value = {
+            id: Number(profileId),
+            name: 'Your was hacked!'
+        }
+        $q.notify({
+            type: 'positive',
+            message: `Profile ${profileId} loaded`,
+            timeout: 1000,
         })
-        onBeforeRouteUpdate((to, from) => {
-            console.log(`[ProfilePage.setup.onBeforeRouteUpdate] ${from.fullPath} -> ${to.fullPath}`)
-        })
+    }, 3000)
+}
+watch<string>(
+    () => route.params?.profileId,
+    (newProfileId) => { fetchData(newProfileId) },
+    { immediate: true }
+)
 
-        // ------------------
-        const store = useTextPairStore();
-        return {
-            store,
-        }
-    },
-
-    async beforeRouteUpdate(to: RouteLocationNormalized, from: RouteLocationNormalized) {
-        // react to route changes...
-        console.log('[ProfilePage.beforeRouteUpdate]'
-            + ` current {profileId=${this.profileId}}: `
-            + ` ${from.fullPath} {profileId=${from.params.profileId}}`
-            + ` -> ${to.fullPath} {profileId=${to.params.profileId}}`)
-    },
-
-    data() {
-        console.log(`[ProfilePage] data: ${typeof this.profileId}:${this.profileId}`)
-        const profile = ref<Profile>();
-        return {
-            loaded: false,
-            // profileIdInt: Number(this.profileId),
-            profile: profile,
-            // store: null,
-        }
-    },
-
-    created() {
-        console.log('[ProfilePage] created')
-        // this.$route.path.startsWith
-        this.$watch(
-            () => this.$route.params?.profileId,
-            (newProfileId) => { this.fetchData(newProfileId) },
-            { immediate: true }
-        )
-    },
-
-    mounted() {
-        console.log('[ProfilePage] mounted')
-    },
-
-    provide() {
-        return {
-            profile: this.profile
-        }
-    },
-
-    methods: {
-        fetchData(profileId: string | undefined) {
-            console.log('[ProfilePage] fetchData', profileId)
-            if (profileId === undefined) {
-                return
-            }
-
-            this.loaded = false
-            this.profile = undefined
-            this.$q.notify({
-                type: 'ongoing',
-                message: `Loading profile ${profileId}`,
-                timeout: 1000,
-            })
-            setTimeout(() => {
-                // this.store = store
-                this.loaded = true
-                this.profile = {
-                    id: Number(profileId),
-                    name: 'Your was hacked!'
-                }
-                this.$q.notify({
-                    type: 'positive',
-                    message: `Profile ${profileId} loaded`,
-                    timeout: 1000,
-                })
-            }, 3000)
-        }
-    },
-});
 </script>

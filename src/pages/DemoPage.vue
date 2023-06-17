@@ -92,7 +92,7 @@ $q.loading.show({
     spinner: QSpinnerGears,
     message: 'hahaha',
 })
-setTimeout(() => { $q.loading.hide() }, 3000);
+setTimeout(() => { $q.loading.hide() }, 1500);
 
 // ------------------
 var profileStore = useProfileStore()
