@@ -42,7 +42,6 @@ export default boot(({ app, ssrContext }) => {
     // app.provide('$axios', axios) // const $axios = inject<Axios>('$axios')
 })
 
-
 function useApi(): { $api: AxiosInstance; isAxiosError: typeof axios.isAxiosError; } {
     const $api = inject<AxiosInstance>('$api')
     if ($api === undefined) {

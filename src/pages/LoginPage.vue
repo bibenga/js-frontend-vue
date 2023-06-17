@@ -37,7 +37,7 @@ const username = ref<string>()
 const password = ref<string>()
 const valid = ref<boolean>()
 
-async function doLogin() {
+const doLogin = async () => {
     console.log('[LoginPage] doLogin')
     $q.loading.show({
         // spinner: QSpinnerGears,

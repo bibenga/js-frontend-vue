@@ -2,9 +2,9 @@
     <q-page padding>
         <div>
             <div>Profiles</div>
-            <div v-if="!profilesLoaded">Loading profiles...</div>
-            <div v-if="profilesLoaded">{{ profiles }}</div>
-            <q-btn color="primary" v-if="profilesLoaded" @click="profileStore.reload">reload</q-btn>
+            <div v-if="!loaded">Loading profiles...</div>
+            <div v-if="loaded">{{ profiles }}</div>
+            <q-btn color="primary" v-if="loaded" @click="profileStore.reload">reload</q-btn>
         </div>
 
         <div>
@@ -59,131 +59,99 @@
     </q-page>
 </template>
 
-<!-- <style lang="sass">
+<style lang="sass">
 div.variable
   color: $indigo
-</style> -->
+</style>
 
 <script lang="ts">
-import { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
-import { defineComponent, ref } from 'vue';
-import { useQuasar, QSpinnerGears } from 'quasar'
-import { useProfileStore } from 'stores/profiles'
-import { storeToRefs } from 'pinia'
-
-export default defineComponent({
-    name: 'IndexPage',
-
-    components: {
-        ExampleComponent,
-    },
-
-    inject: ['layoutProp'],
-    // inject: { layoutOlala: { from: 'layoutProp' } },
-
+export default {
     async preFetch({ store, currentRoute, previousRoute, urlPath, publicPath }) {
-        // return store.dispatch('fetchItem', currentRoute.params.id)
-        console.log(`[IndexPage] preFetch: store=${store}, `
+        console.log(`[DemoPage] preFetch: store=${store}, `
             + `currentRoute=${currentRoute.fullPath}, `
             + `previousRoute=${previousRoute.fullPath}, `
             + `urlPath=${urlPath}, `
             + `publicPath=${publicPath}, `
         )
-        // return store.dispatch('load')
-
-        // yes, an "await" worked and the router waits
-        // var profileStore = useProfileStore()
-        // await profileStore.load()
-    },
-
-    setup() {
-        // ------------------
-        const $q = useQuasar()
-        $q.loading.show({
-            spinner: QSpinnerGears,
-            message: 'hahaha',
-        })
-        setTimeout(() => { $q.loading.hide() }, 3000);
-
-        // ------------------
-        var profileStore = useProfileStore()
-        const { profiles, loaded } = storeToRefs(profileStore)
-        profileStore.$onAction(({ name, args, after, onError }) => {
-            const startTime = Date.now()
-            console.log(`[ProfileStore] Start "${name}" with params [${args.join(', ')}].`)
-            after(result => {
-                console.log(
-                    `[ProfileStore] Finished "${name}" after ${Date.now() - startTime}ms -> ${result}.`
-                )
-            })
-            onError(error => {
-                console.warn(
-                    `[ProfileStore] Failed "${name}" after ${Date.now() - startTime}ms -> ${error}.`
-                )
-            })
-        })
-
-        // ------------------
-        const todos = ref<Todo[]>([
-            { id: 1, content: 'ct1' },
-            { id: 2, content: 'ct2' },
-        ]);
-        const meta = ref<Meta>({
-            totalCount: 1200
-        });
-
-        // ------------------
-        const name = ref<string | null>(null)
-        const age = ref<number | null>(null)
-        const accept = ref(false)
-
-        return {
-            todos, meta,
-            profiles, profilesLoaded: loaded, profilesReload: profileStore.reload,
-            name, age, accept,
-            // layoutProp: this.layoutProp,
-            profileStore,
-        };
-    },
-
-    data() {
-        return {
-            olala: 'Sí',
-        }
-    },
-
-    computed: {
-        isOlala() {
-            return '<script>alert("Hacked, hahaha :)")&lt;/script>'
-        }
-    },
-
-    methods: {
-        onSubmit() {
-            // const $q = useQuasar()
-            if (this.accept !== true) {
-                this.$q.notify({
-                    color: 'red-5',
-                    textColor: 'white',
-                    icon: 'warning',
-                    message: 'You need to accept the license and terms first'
-                })
-            }
-            else {
-                this.$q.notify({
-                    color: 'green-4',
-                    textColor: 'white',
-                    icon: 'cloud_done',
-                    message: 'Submitted'
-                })
-            }
-        },
-        onReset() {
-            this.name = null
-            this.age = null
-            this.accept = false
-        }
     }
+}
+</script>
+
+<script setup lang="ts">
+import { Todo, Meta } from 'components/models';
+import ExampleComponent from 'components/ExampleComponent.vue';
+import { computed, inject, ref } from 'vue';
+import { useQuasar, QSpinnerGears } from 'quasar'
+import { useProfileStore } from 'stores/profiles'
+import { storeToRefs } from 'pinia'
+
+const layoutProp = inject('layoutProp')
+
+const $q = useQuasar()
+$q.loading.show({
+    spinner: QSpinnerGears,
+    message: 'hahaha',
+})
+setTimeout(() => { $q.loading.hide() }, 3000);
+
+// ------------------
+var profileStore = useProfileStore()
+const { profiles, loaded } = storeToRefs(profileStore)
+profileStore.$onAction(({ name, args, after, onError }) => {
+    const startTime = Date.now()
+    console.log(`[ProfileStore] Start "${name}" with params [${args.join(', ')}].`)
+    after(result => {
+        console.log(
+            `[ProfileStore] Finished "${name}" after ${Date.now() - startTime}ms -> ${result}.`
+        )
+    })
+    onError(error => {
+        console.warn(
+            `[ProfileStore] Failed "${name}" after ${Date.now() - startTime}ms -> ${error}.`
+        )
+    })
+})
+
+// ------------------
+const todos = ref<Todo[]>([
+    { id: 1, content: 'ct1' },
+    { id: 2, content: 'ct2' },
+]);
+const meta = ref<Meta>({
+    totalCount: 1200
 });
+
+// ------------------
+const olala = '<script>alert("Hacked, hahaha :)")&lt;/script>'
+const isOlala = computed(() => olala)
+
+// ------------------
+const name = ref<string>()
+const age = ref<number>()
+const accept = ref(false)
+
+const onSubmit = () => {
+    // const $q = useQuasar()
+    if (accept.value !== true) {
+        $q.notify({
+            color: 'red-5',
+            textColor: 'white',
+            icon: 'warning',
+            message: 'You need to accept the license and terms first'
+        })
+    } else {
+        $q.notify({
+            color: 'green-4',
+            textColor: 'white',
+            icon: 'cloud_done',
+            message: 'Submitted'
+        })
+    }
+}
+
+const onReset = () => {
+    name.value = undefined
+    age.value = undefined
+    accept.value = false
+}
 </script>

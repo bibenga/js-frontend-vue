@@ -56,9 +56,15 @@ export const useProfileStore = defineStore('profile', () => {
         return found
     }
 
+    const reset = () => {
+        state.value = ''
+        profiles.value = []
+        profile.value = undefined
+    }
+
     return {
         state, loaded, profiles, profile,
-        load, reload,
+        load, reload, reset,
         getProfile
     }
 });
