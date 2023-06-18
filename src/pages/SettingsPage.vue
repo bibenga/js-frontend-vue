@@ -17,11 +17,6 @@ import { useQuasar, QSpinnerGears } from 'quasar'
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 import SimpleComponent from 'components/SimpleComponent.vue';
 
-const props = defineProps<{
-    foo?: string
-    bar?: number
-}>()
-
 // -----
 const $q = useQuasar()
 $q.loading.show({
